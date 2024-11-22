@@ -19,7 +19,7 @@ export class UserController {
             "fullNames":createUserDto.fullNames,
             "email":createUserDto.email,
             "password":createUserDto.password,
-            "role":createUserDto.role,
+          
             // "picture":url,
 
         }

@@ -13,10 +13,9 @@ export class User extends Document{
     password:string
 
     @Prop()
-    picture:string
+    picture:string|null
 
-    @Prop()
-    role:string
+    
 }
 
 export type UserDocument = User & Document
