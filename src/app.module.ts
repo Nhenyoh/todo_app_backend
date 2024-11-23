@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from 'src/database-module';
+import { TodModule } from './todo/todo_module';
+import { NoteModule } from './note/note_module';
 
 @Module({
   imports: [
@@ -15,7 +17,11 @@ import { DatabaseModule } from 'src/database-module';
     MongooseModule.forRoot(process.env.MONGODB_URI,{ connectTimeoutMS: 30000,}),
 
     DatabaseModule,
-    UserModule
+    UserModule,
+    TodModule,
+    NoteModule
+
+
   ],
   controllers: [AppController],
   providers: [AppService],

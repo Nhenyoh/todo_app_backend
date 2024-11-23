@@ -3,51 +3,37 @@ import { createUserDTO } from './Dto/create-user-dto';
 import { UserService } from './user.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
-    constructor(private readonly user:UserService, private readonly cloudinaryService: CloudinaryService){}
+  constructor(private readonly userService: UserService) {}
 
+  // Signup route
+  @Post('signup')
+  async signup(@Body() createUserDto: createUserDTO) {
+    return this.userService.create(createUserDto);
+  }
 
-    @Post('')
-    // @UseInterceptors(FileInterceptor('file'))
-    async create(@Body('') createUserDto:createUserDTO,){
-        console.log("CREATING USER")
+  // Login route
+  @Post('login')
+  async login(@Body() createLoginDto: { email: string; password: string }) {
+    return this.userService.login(createLoginDto);
+  }
 
-        // const url = await this.cloudinaryService.uploadImage(file);
-        const data={
+  // Get all users
+  @Get()
+  async getUsers() {
+    return this.userService.getUsers();
+  }
 
-            "fullNames":createUserDto.fullNames,
-            "email":createUserDto.email,
-            "password":createUserDto.password,
-          
-            // "picture":url,
+  // Get a specific user by ID
+  @Get(':id')
+  async getUser(@Param('id') id: string) {
+    return this.userService.getUser(id);
+  }
 
-        }
-        console.log("USER DATA", data)
-        return this.user.create(data);
-    }
-
-    @Post('/login')
-   
-    async login(@Body('') createLoginDto:{email:string,password:string}){
-        console.log("THE YOUR IS LOGGING IN ")
-        return this.user.login(createLoginDto)
-    }
-
-    @Get()
-    async getUsers(){
-        return this.user.getUsers()
-    }
-
-    @Get(':id')
-    async getUser(@Param() id:string){
-        return this.user.getUser(id)
-    }
-
-
-    @Delete()
-    async deleteUser(id:string){
-        return this.user.deleteUser(id)
-    }
-
+  // Delete a user by ID
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string) {
+    return this.userService.deleteUser(id);
+  }
 }
