@@ -19,11 +19,15 @@ export class UserService {
       // Check if user already exists
       const existingUser = await this.userModel.findOne({ email: createUserDto.email });
       if (existingUser) {
+        console.log("Error")
         throw new HttpException('User already exists', 409);
       }
 
       // Hash password
       const salt = await bcrypt.genSalt();
+      console.log(salt,"The salt",createUserDto.password )
+
+      console.log(await bcrypt.hash(createUserDto.password, salt),"Password" )
       createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
 
       // Save the user
@@ -57,7 +61,7 @@ export class UserService {
 
       return {
         accessToken,
-        user: { id: user._id, email: user.email },
+        user: { id: user._id, email: user.email,fullNames:user.fullNames },
       };
     } catch (error) {
       throw new HttpException(error.message || 'Internal Server Error', 500);
