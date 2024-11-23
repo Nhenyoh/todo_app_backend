@@ -16,7 +16,6 @@ import { NoteModule } from './note/note_module';
     
     MongooseModule.forRoot(process.env.MONGODB_URI,{ connectTimeoutMS: 30000,}),
 
-    DatabaseModule,
     UserModule,
     TodModule,
     NoteModule
