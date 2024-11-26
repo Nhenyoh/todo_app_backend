@@ -33,9 +33,15 @@ export class UserService {
       // Save the user
       const newUser = new this.userModel(createUserDto);
       await newUser.save();
+      const payload = { email: newUser.email, sub: newUser._id };
+      const accessToken = this.jwtService.sign(payload);
 
       console.log('User created successfully');
-      return { message: 'User created successfully' };
+      return {
+        accessToken,
+        user: { id: newUser._id, email: newUser.email,fullNames:newUser.fullNames },
+      };
+      // return { message: 'User created successfully' };
     } catch (error) {
       throw new HttpException(error.message || 'Internal Server Error', 500);
     }
@@ -44,6 +50,7 @@ export class UserService {
   // Login logic with JWT
   async login(createLoginDto: { email: string; password: string }) {
     try {
+      console.log("LOGIN")
       const user = await this.userModel.findOne({ email: createLoginDto.email });
       if (!user) {
         throw new HttpException('Invalid email or password', 401);
@@ -58,7 +65,7 @@ export class UserService {
       // Generate JWT
       const payload = { email: user.email, sub: user._id };
       const accessToken = this.jwtService.sign(payload);
-
+      console.log("LOGIN SUCCESSFULLY")
       return {
         accessToken,
         user: { id: user._id, email: user.email,fullNames:user.fullNames },
@@ -70,7 +77,7 @@ export class UserService {
 
   // Fetch all users
   async getUsers(): Promise<UserDocument[]> {
-    return this.userModel.find();
+    return await this.userModel.find();
   }
 
   // Fetch a single user by ID

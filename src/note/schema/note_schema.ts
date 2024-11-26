@@ -10,7 +10,7 @@ export class Note extends Document{
     @Prop()
     title:string
     @Prop()
-    description:string
+    details:string
 }
 
 

@@ -20,7 +20,7 @@ export class UserController {
   }
 
   // Get all users
-  @Get()
+  @Get('')
   async getUsers() {
     return this.userService.getUsers();
   }

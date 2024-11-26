@@ -19,3 +19,12 @@ Content-Type: application/json
 
     "password":"123456"
 }
+
+
+###
+
+Get http://localhost:3000/users/
+
+
+###
+Get http://localhost:3000/notes/
