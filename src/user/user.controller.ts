@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { createUserDTO } from './Dto/create-user-dto';
 import { UserService } from './user.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { updateUserDto } from './Dto/update-user-dto';
 
 @Controller('users')
 export class UserController {
@@ -35,5 +36,9 @@ export class UserController {
   @Delete(':id')
   async deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
+  }
+  @Put('update')
+  async update(@Body('')updateuserdto:updateUserDto ){
+    return this.userService.update(updateuserdto)
   }
 }

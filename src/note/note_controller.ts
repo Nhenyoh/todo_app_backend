@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
 
 import { NoteService } from "./note_service";
 import { createNoteDTO } from "./dto/create_note_dto";
@@ -22,4 +22,12 @@ export class Notecontroller{
     async getAllTodo():Promise<Note[]>{
         return this.todoService.getAllTodo()
     }
+
+
+    @Delete('')
+    async delete(@Body('')id:string){
+
+        return this.todoService.deleteTodo(id)
+    }
+    
 }

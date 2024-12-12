@@ -5,6 +5,7 @@ import { createUserDTO } from './Dto/create-user-dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { updateUserDto } from './Dto/update-user-dto';
 
 @Injectable()
 export class UserService {
@@ -88,5 +89,19 @@ export class UserService {
   // Delete a user by ID
   async deleteUser(id: string) {
     return this.userModel.findByIdAndDelete(id);
+  }
+
+  async update(updateuserdto:updateUserDto){
+    console.log("UPDATED USER PROFILE",updateuserdto)
+
+    const filteredUpdate = Object.fromEntries(
+      Object.entries(updateuserdto).filter(([_, value]) => value !== null)
+    );
+    console.log("UPDATED USER PROFILE",filteredUpdate)
+
+     this.userModel.updateOne({ _id: updateuserdto.id }, { $set: filteredUpdate });
+
+     return filteredUpdate
+    
   }
 }

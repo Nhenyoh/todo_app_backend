@@ -14,10 +14,26 @@ export class NoteService{
          async create(noteservice:createNoteDTO){
 
                try {
-                const newTodo =  new this.noteService(noteservice)
+                console.log(" VALUE",noteservice.id)
 
-                await newTodo.save()
-                console.log("Note created")
+                 const noteExist= await this.noteService.findOne({id:noteservice.id})
+
+                 console.log("THIS IS THE CREATED VALUE",noteExist)
+                  if(noteExist){
+
+                    throw  new HttpException("Note exist",502)
+                  }
+                  else{
+                    const newTodo =  new this.noteService(noteservice)
+                      console.log("Run time")
+                    await newTodo.save()
+                    console.log("Note created")
+
+                  }
+                  
+                    
+
+          
 
                 return "Successful"
                } catch (error) {
@@ -48,6 +64,21 @@ export class NoteService{
                  }
          }
 
+         
+         async deleteTodo(id:string){
+          try {
+            console.log("Deleting item",)
+            const respons= await this.noteService.deleteOne({_id: id['id'] }); 
+            console.log("delete response ",respons)
+            return "Deleted"
+          }
+           catch (error) {
+               throw  new HttpException(error,500)
+
+           }
+
+           
+   }
          
 
 }

@@ -11,6 +11,8 @@ export class Note extends Document{
     title:string
     @Prop()
     details:string
+    @Prop({ unique: true,})
+    id:string
 }
 
 

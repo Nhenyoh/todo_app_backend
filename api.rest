@@ -15,7 +15,7 @@ Post http://localhost:3000/users/login
 Content-Type: application/json
 
 { 
-        "email":"betrandcliffgmail.com",
+    "email":"betrandcliffgmail.com",
 
     "password":"123456"
 }
@@ -27,4 +27,34 @@ Get http://localhost:3000/users/
 
 
 ###
+
+Put http://localhost:3000/users/update
+Content-Type: application/json
+
+{
+    "id":"674cc8d74a4763a3e172b939",
+    "fullNames":"Hakeem"
+}
+###
 Get http://localhost:3000/notes/
+
+
+
+###
+Post http://localhost:3000/notes/
+Content-Type: application/json
+
+{
+    'title': 'Texting',
+    'body': 'this message meets you well',
+    'id':  '337',
+}
+
+
+###
+Put http://localhost:3000/users/update
+Content-Type: application/json
+
+{
+    "fullNames":"Testing"
+}
