@@ -1,21 +1,22 @@
 
-Post http://localhost:3000/users/signup
+# Post http://localhost:3000/users/signup
+post https://todo-app-backend-h8w0.onrender.com/users/signup
 Content-Type: application/json
 
 {
     "fullNames":"Hakeen Smith",
-    "email":"betrandcliffgmail.com",
+    "email":"hakeemsmith@gmail.com",
     "password":"123456"
 }
 
 
 ###
 
-Post http://localhost:3000/users/login
+Post https://todo-app-backend-h8w0.onrender.com/users/login
 Content-Type: application/json
 
 { 
-    "email":"betrandcliffgmail.com",
+    "email":"hakeemsmith@gmail.com",
 
     "password":"123456"
 }
@@ -23,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-Get http://localhost:3000/users/
+Get https://todo-app-backend-h8w0.onrender.com/users/
 
 
 ###
@@ -58,3 +59,6 @@ Content-Type: application/json
 {
     "fullNames":"Testing"
 }
+
+###
+# Get mongodb+srv://BetrandCliff:<db_password>@cluster0.akktj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
