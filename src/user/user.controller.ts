@@ -32,7 +32,6 @@ export class UserController {
     return this.userService.getUser(id);
   }
 
-  // Delete a user by ID
   @Delete(':id')
   async deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);

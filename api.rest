@@ -4,8 +4,8 @@ post https://todo-app-backend-h8w0.onrender.com/users/signup
 Content-Type: application/json
 
 {
-    "fullNames":"Hakeen Smith",
-    "email":"hakeemsmith@gmail.com",
+    "fullNames":"Mofori",
+    "email":"mofori@gmail.com",
     "password":"123456"
 }
 
@@ -37,7 +37,7 @@ Content-Type: application/json
     "fullNames":"Hakeem"
 }
 ###
-Get http://localhost:3000/notes/
+DELETE  https://todo-app-backend-h8w0.onrender.com/users/672ed22d205a4f1f8f3a75e5
 
 
 
