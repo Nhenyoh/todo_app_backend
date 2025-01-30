@@ -44,16 +44,16 @@ export class NoteService{
 
 
 
-         async getTodo(id:String):Promise<Note>{
+         async getNotes():Promise<Note[]>{
                 try {
-                       return this.noteService.findById(id) 
+                       return this.noteService.find() 
                 } catch (error) {
                     throw  new HttpException(error,500)
  
                 }
          }
 
-         async getAllTodo(uid:string):Promise<Note[]>{
+         async getUsersNotes(uid:string):Promise<Note[]>{
                 try {
                      console.log("OK FETCH")
                        // Validate `uid` before converting
@@ -71,7 +71,7 @@ export class NoteService{
          }
 
          
-         async deleteTodo(id:string){
+         async deleteNote(id:string):Promise<string>{
           try {
             console.log("Deleting item",)
             const respons= await this.noteService.deleteOne({_id: id['id'] }); 
