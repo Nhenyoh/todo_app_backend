@@ -22,9 +22,26 @@ Content-Type: application/json
 }
 
 
+
 ###
 
 Get https://todo-app-backend-h8w0.onrender.com/users/
+
+###
+
+Post https://todo-app-backend-h8w0.onrender.com/notes/
+Content-Type: application/json
+
+{
+    "title":"Fixing Bugs",
+    "details":"The bug of fetching all notes has being fixed",
+    "id":"2",
+    "owner":"67978a71dd90b3610282aa27"
+}
+
+###
+GET  https://todo-app-backend-h8w0.onrender.com/notes
+
 
 
 ###

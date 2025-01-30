@@ -19,8 +19,8 @@ export class Notecontroller{
     }
 
     @Get('')
-    async getAllTodo():Promise<Note[]>{
-        return this.todoService.getAllTodo()
+    async getAllTodo(@Param('') uid:string):Promise<Note[]>{
+        return this.todoService.getAllTodo(uid)
     }
 
 
