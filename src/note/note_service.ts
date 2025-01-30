@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-// import { Todo, TodoDocument } from "./schema/todo_schema";
 import { Model } from "mongoose";
 import { Note, NoteDocument } from "./schema/note_schema";
 import { createNoteDTO } from "./dto/create_note_dto";
@@ -54,14 +53,14 @@ export class NoteService{
                 }
          }
 
-         async getAllTodo():Promise<Note[]>{
+         async getAllTodo(uid:string):Promise<Note[]>{
                 try {
                      console.log("OK FETCH")
-                        return  await this.noteService.find() 
+                        return  await this.noteService.find({owner:uid}) 
                  } catch (error) {
                      throw  new HttpException(error,500)
   
-                 }
+                 }  
          }
 
          
