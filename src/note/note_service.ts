@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { Note, NoteDocument } from "./schema/note_schema";
 import { createNoteDTO } from "./dto/create_note_dto";
 
@@ -56,7 +56,14 @@ export class NoteService{
          async getAllTodo(uid:string):Promise<Note[]>{
                 try {
                      console.log("OK FETCH")
-                        return  await this.noteService.find({owner:uid}) 
+                       // Validate `uid` before converting
+                        if (!uid || !Types.ObjectId.isValid(uid)) {
+                          throw new HttpException('Invalid user ID', 400);
+                      }
+
+                       // Convert `uid` to ObjectId
+                         const userId = new Types.ObjectId(uid);
+                        return  await this.noteService.find({owner:userId}) 
                  } catch (error) {
                      throw  new HttpException(error,500)
   
