@@ -13,12 +13,12 @@ export class Notecontroller{
         return this.todoService.create(createNotedto)
     }
 
-    @Get('/id')
-    async getTodo():Promise<Note>{
-        return this.getTodo()
+    @Get('/todo/id')
+    async getTodo(@Param('')id:string):Promise<Note>{
+        return this.todoService.getTodo(id)
     }
 
-    @Get('')
+    @Get('/uid')
     async getAllTodo(@Param('') uid:string):Promise<Note[]>{
         return this.todoService.getAllTodo(uid)
     }
