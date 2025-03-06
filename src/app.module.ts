@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { DatabaseModule } from 'src/database-module';
 import { TodModule } from './todo/todo_module';
 import { NoteModule } from './note/note_module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { NoteModule } from './note/note_module';
 
     UserModule,
     TodModule,
-    NoteModule
+    NoteModule,
+    CloudinaryModule
 
 
   ],

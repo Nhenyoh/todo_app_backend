@@ -40,4 +40,5 @@ export class UserController {
   async update(@Body('')updateuserdto:updateUserDto ){
     return this.userService.update(updateuserdto)
   }
+ 
 }
