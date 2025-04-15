@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "env":{"MONGO_URI": "@MONGODB_URI" },
+    "env":{"MONGO_URI": "@MONGO_URI" },
     "builds": [
       {
         "src": "dist/main.js",
