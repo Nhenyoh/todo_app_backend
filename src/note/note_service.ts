@@ -63,7 +63,7 @@ export class NoteService{
 
                        // Convert `uid` to ObjectId
                          const userId = new Types.ObjectId(uid);
-                        return  await this.noteService.find({owner:userId}) 
+                        return  await this.noteService.find({createdby:userId}) 
                  } catch (error) {
                      throw  new HttpException(error,500)
   
