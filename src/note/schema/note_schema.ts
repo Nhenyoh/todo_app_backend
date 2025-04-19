@@ -15,7 +15,7 @@ export class Note extends Document{
     @Prop({ unique: true,})
     id:string
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' }) // Reference User model
-    owner: User;
+    createdby: string;
 }
 
 
