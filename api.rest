@@ -33,10 +33,10 @@ Post https://todo-app-backend-h8w0.onrender.com/notes/
 Content-Type: application/json
 
 {
-    "title":"Fixing Bugs",
+    "title":"Visiting mum today",
     "details":"The bug of fetching all notes has being fixed",
-    "id":"3",
-    "owner":"67978a71dd90b3610282aa27"
+    "id":"23",
+    "createdby":"67feadb4b11216b645e0cdb2"
 }
 
 ###

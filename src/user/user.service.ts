@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { updateUserDto } from './Dto/update-user-dto';
+import { ChangePasswordDto } from './Dto/change-password';
 
 @Injectable()
 export class UserService {
@@ -75,6 +76,25 @@ export class UserService {
       throw new HttpException(error.message || 'Internal Server Error', 500);
     }
   }
+
+
+async changePassword(dto: ChangePasswordDto) {
+  const user = await this.userModel.findById(dto.id);
+  if (!user) {
+    throw new HttpException('User not found', 404);
+  }
+
+  const isOldPasswordValid = await bcrypt.compare(dto.oldPassword, user.password);
+  if (!isOldPasswordValid) {
+    throw new HttpException('Old password is incorrect', 400);
+  }
+
+  const hashedNewPassword = await bcrypt.hash(dto.newPassword, await bcrypt.genSalt());
+  user.password = hashedNewPassword;
+  await user.save();
+
+  return { message: 'Password changed successfully' };
+}
 
   // Fetch all users
   async getUsers(): Promise<UserDocument[]> {
