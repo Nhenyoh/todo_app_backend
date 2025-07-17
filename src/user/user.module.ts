@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './schema/user-schema';
+import { otpSchema, OTPStore, User, UserSchema } from './schema/user-schema';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -16,6 +16,9 @@ import { JwtModule } from '@nestjs/jwt';
         }),
         MongooseModule.forFeature([
             {name:User.name,schema:UserSchema}
+          ]),
+       MongooseModule.forFeature([
+            {name:OTPStore.name,schema:otpSchema}
           ])
     ],
     providers:[UserService,CloudinaryService],

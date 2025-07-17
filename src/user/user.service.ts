@@ -1,127 +1,184 @@
-import { HttpException, Injectable } from '@nestjs/common';
-import { User, UserDocument } from './schema/user-schema';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { OTPDocument, OTPStore, User, UserDocument } from './schema/user-schema';
 import { Model } from 'mongoose';
 import { createUserDTO } from './Dto/create-user-dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { updateUserDto } from './Dto/update-user-dto';
-import { ChangePasswordDto } from './Dto/change-password';
+import { JwtService } from '@nestjs/jwt';
+import * as nodemailer from 'nodemailer';
+import { randomInt } from 'crypto';
+import { SendOTPDTO } from './Dto/opt-dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+     @InjectModel(OTPStore.name) private readonly otpModel: Model<OTPDocument>,
     private readonly jwtService: JwtService,
   ) {}
 
-  // User signup logic
-  async create(createUserDto: createUserDTO) {
-    try {
-      // Check if user already exists
-      const existingUser = await this.userModel.findOne({ email: createUserDto.email });
-      if (existingUser) {
-        console.log("Error")
-        throw new HttpException('User already exists', 409);
+      async create(user: createUserDTO) {
+      try {
+        console.log("CREATING A NEW USER")
+        const otpRecord = await this.otpModel.findOne({ email: user.email });
+        console.log(otpRecord)
+
+        if (!otpRecord) {
+          console.log("Empty otp")
+          return { message: 'OTP not found or expired. Please request a new one.' };
+        }
+
+        if (otpRecord.otp !== user.otp) {
+           console.log(" otp Not match", otpRecord.otp,"user",user.otp)
+          return { message: 'Incorrect OTP' };
+        }
+
+        // Optional: Check OTP expiry
+        if (otpRecord.otpExpiresAt && otpRecord.otpExpiresAt < new Date()) {
+           console.log(" Otp expiredd")
+          return { message: 'OTP has expired. Please request a new one.' };
+        }
+
+        
+        // Hash password and create user
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        const newUser = new this.userModel({
+          ...user,
+          password: hashedPassword,
+          emailVerified:true,
+        });
+
+        await newUser.save();
+        console.log('User created');
+
+        // Delete OTP after successful registration
+        await this.otpModel.deleteOne({ email: user.email });
+        const payload = { sub: newUser._id, email: user.email };
+        const token = await this.jwtService.signAsync(payload);
+      const  data={
+          fullNames:user.fullNames,
+          email:user.email,
+          token:token,
+          id:newUser._id
+        }
+
+        return { message: "User Created Successful",user:data };
+      } catch (error) {
+        throw new HttpException(error.message || error, 500);
       }
-
-      // Hash password
-      const salt = await bcrypt.genSalt();
-      console.log(salt,"The salt",createUserDto.password )
-
-      console.log(await bcrypt.hash(createUserDto.password, salt),"Password" )
-      createUserDto.password = await bcrypt.hash(createUserDto.password, salt);
-
-      // Save the user
-      const newUser = new this.userModel(createUserDto);
-      await newUser.save();
-      const payload = { email: newUser.email, sub: newUser._id };
-      const accessToken = this.jwtService.sign(payload);
-
-      console.log('User created successfully');
-      return {
-        accessToken,
-        user: { id: newUser._id, email: newUser.email,fullNames:newUser.fullNames },
-      };
-      // return { message: 'User created successfully' };
-    } catch (error) {
-      throw new HttpException(error.message || 'Internal Server Error', 500);
     }
-  }
 
-  // Login logic with JWT
+
   async login(createLoginDto: { email: string; password: string }) {
     try {
-      console.log("LOGIN")
       const user = await this.userModel.findOne({ email: createLoginDto.email });
+
       if (!user) {
-        throw new HttpException('Invalid email or password', 401);
+        throw new UnauthorizedException('Invalid email or password');
       }
 
-      // Validate password
-      const isPasswordValid = await bcrypt.compare(createLoginDto.password, user.password);
+      const isPasswordValid = await bcrypt.compare(
+        createLoginDto.password,
+        user.password,
+      );
+
       if (!isPasswordValid) {
-        throw new HttpException('Invalid email or password', 401);
+        throw new UnauthorizedException('Invalid email or password');
       }
 
-      // Generate JWT
-      const payload = { email: user.email, sub: user._id };
-      const accessToken = this.jwtService.sign(payload);
-      console.log("LOGIN SUCCESSFULLY")
+      const payload = { sub: user._id, email: user.email };
+      const token = await this.jwtService.signAsync(payload);
+
       return {
-        accessToken,
-        user: { id: user._id, email: user.email,fullNames:user.fullNames },
+        user: {
+          id: user._id,
+          email: user.email,
+          fullNames:user.fullNames,
+          token
+        },
       };
     } catch (error) {
-      throw new HttpException(error.message || 'Internal Server Error', 500);
+      throw new HttpException(error.message || error, 500);
     }
   }
 
-
-async changePassword(dto: ChangePasswordDto) {
-  const user = await this.userModel.findById(dto.id);
-  if (!user) {
-    throw new HttpException('User not found', 404);
-  }
-
-  const isOldPasswordValid = await bcrypt.compare(dto.oldPassword, user.password);
-  if (!isOldPasswordValid) {
-    throw new HttpException('Old password is incorrect', 400);
-  }
-
-  const hashedNewPassword = await bcrypt.hash(dto.newPassword, await bcrypt.genSalt());
-  user.password = hashedNewPassword;
-  await user.save();
-
-  return { message: 'Password changed successfully' };
-}
-
-  // Fetch all users
   async getUsers(): Promise<UserDocument[]> {
-    return await this.userModel.find();
+    return this.userModel.find();
   }
 
-  // Fetch a single user by ID
+  async getOTPs(): Promise<UserDocument[]> {
+    return this.otpModel.find();
+  }
+
   async getUser(id: string): Promise<UserDocument> {
     return this.userModel.findById(id);
   }
 
-  // Delete a user by ID
   async deleteUser(id: string) {
-    return this.userModel.findByIdAndDelete(id);
+    return this.userModel.findById(id).deleteOne();
   }
 
-  async update(updateuserdto:updateUserDto){
-    console.log("UPDATED USER PROFILE",updateuserdto)
 
-    const filteredUpdate = Object.fromEntries(
-      Object.entries(updateuserdto).filter(([_, value]) => value !== null)
+  async verification(user: SendOTPDTO): Promise<{ message: string; otp: string }> {
+  try {
+    const checkUser= await this.userModel.findOne({email:user.email})
+        if(checkUser){
+          console.log("User already exist")
+          return  {message:"Users Already exist","otp":"" }
+        }
+
+    const otp = randomInt(1000, 9999).toString(); // Generate 4-digit OTP
+    console.log("Generating OTP and preparing to send...");
+
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"Planner" <${process.env.GMAIL_USER}>`,
+      to: user.email,
+      subject: 'Your OTP Code for Verification',
+      text: `Hi ${user.userName || 'User'},\n\nYour One-Time Password (OTP) is: ${otp}\n\nThis code will expire in 10 minutes. Do not share it with anyone.\n\nThank you,\nYour App Team`,
+      html: `
+        <div style="font-family: Arial, sans-serif; font-size: 16px;">
+          <p>Hi ${user.userName || 'User'},</p>
+          <p>Your <strong>One-Time Password (OTP)</strong> is:</p>
+          <h2 style="color: #2e6c80;">${otp}</h2>
+          <p>This code will expire in <strong>10 minutes</strong>. Please do not share it with anyone.</p>
+          <p>Thank you,<br/>The <strong>Your App</strong> Team</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("OTP email sent to:", user.email);
+
+    // Save OTP to database (create or update)
+    await this.otpModel.findOneAndUpdate(
+      { email: user.email },
+      {
+        otp,
+        otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+        updatedAt: new Date(),
+      },
+      { upsert: true, new: true }
     );
-    console.log("UPDATED USER PROFILE",filteredUpdate)
 
-     this.userModel.updateOne({ _id: updateuserdto.id }, { $set: filteredUpdate });
-
-     return filteredUpdate
-    
+    return { message: 'OTP sent successfully to your email', otp };
+  } catch (error) {
+    console.error("OTP sending failed:", error);
+    throw new HttpException(error.message || error, 500);
   }
+}
+
+
 }

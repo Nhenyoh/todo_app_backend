@@ -1,15 +1,26 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { createUserDTO } from './Dto/create-user-dto';
 import { UserService } from './user.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { updateUserDto } from './Dto/update-user-dto';
-import { ChangePasswordDto } from './Dto/change-password';
-import { AuthGuard } from '@nestjs/passport';
+import { SendOTPDTO } from './Dto/opt-dto';
+// import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+// import { updateUserDto } from './Dto/update-user-dto';
+// import { ChangePasswordDto } from './Dto/change-password';
+// import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+ // Get all users
+  @Get('otps')
+  async getOTPs() {
+    return this.userService.getOTPs();
+  }
+    // Signup route
+  @Post('verification')
+  async verification(@Body() sendOTP: SendOTPDTO) {
+    return this.userService.verification(sendOTP);
+  }
   // Signup route
   @Post('signup')
   async signup(@Body() createUserDto: createUserDTO) {
@@ -35,22 +46,6 @@ export class UserController {
   }
 
   
-  @Patch('change-password')
-  @UseGuards(AuthGuard('jwt'))
-  async changePassword(@Req() req, @Body() dto: { oldPassword: string, newPassword: string }) {
-    return this.userService.changePassword({
-      id: req.user.sub,
-      ...dto,
-    });
-  }
   
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
-    return this.userService.deleteUser(id);
-  }
-  @Put('update')
-  async update(@Body('')updateuserdto:updateUserDto ){
-    return this.userService.update(updateuserdto)
-  }
  
 }

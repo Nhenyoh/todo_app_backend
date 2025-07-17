@@ -13,9 +13,9 @@ export class NoteService{
          async create(noteservice:createNoteDTO){
 
                try {
-                console.log(" VALUE",noteservice.id)
+                console.log(" VALUE",noteservice.userid)
 
-                 const noteExist= await this.noteService.findOne({id:noteservice.id})
+                 const noteExist= await this.noteService.findOne({id:noteservice.userid})
 
                  console.log("THIS IS THE CREATED VALUE",noteExist)
                   if(noteExist){

@@ -4,6 +4,7 @@ export class createUserDTO{
 
     readonly fullNames:string
     readonly email:string
-     password:string
+    readonly password:string
+    readonly otp:string
     
 }
