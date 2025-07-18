@@ -98,7 +98,7 @@ export class UserService {
           id: user._id,
           email: user.email,
           fullNames:user.fullNames,
-          token
+          token,
         },
       };
     } catch (error) {
