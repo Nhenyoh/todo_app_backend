@@ -27,7 +27,7 @@ export class Notecontroller{
     @Delete('/:id')
     async delete(@Param('id') id:string):Promise<string>{
 
-        return this.todoService.deleteNote(id)
+        return this.todoService.deleteNote(id) 
     }
     
 }

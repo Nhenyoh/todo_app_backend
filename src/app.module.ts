@@ -8,6 +8,7 @@ import { DatabaseModule } from 'src/database-module';
 import { TodModule } from './todo/todo_module';
 import { NoteModule } from './note/note_module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { RecordModule } from './record/record-module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     UserModule,
     TodModule,
     NoteModule,
-    CloudinaryModule
+    CloudinaryModule,
+    RecordModule
 
 
   ],

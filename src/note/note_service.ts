@@ -79,7 +79,7 @@ export class NoteService{
             return "Deleted"
           }
            catch (error) {
-               throw  new HttpException(error,500)
+               throw  new HttpException(error,500) 
 
            }
 
