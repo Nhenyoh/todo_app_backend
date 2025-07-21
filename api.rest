@@ -29,6 +29,9 @@ Get http://localhost:3000/record/
 
 
 ###
+DELETE http://localhost:3000/record/687e27568565a4f2f123d8c9
+
+###
 
 Get http://localhost:3000/users/otps
 ###

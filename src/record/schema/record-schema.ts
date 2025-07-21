@@ -9,6 +9,8 @@ export class Record extends Document{
     title:string
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' }) // Reference User model
     createdby: string;
+    @Prop({type:Date})
+    createdat:Date
 }
 
 

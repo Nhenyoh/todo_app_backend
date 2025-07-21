@@ -180,5 +180,32 @@ export class UserService {
   }
 }
 
+  async changePassword(data: {
+  userId: string;
+  currentPassword: string;
+  newPassword: string;
+}): Promise<{ message: string }> {
+  try {
+    const user = await this.userModel.findById(data.userId);
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(data.currentPassword, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Current password is incorrect');
+    }
+
+    const hashedNewPassword = await bcrypt.hash(data.newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
+
+    return { message: 'Password changed successfully' };
+  } catch (error) {
+    throw new HttpException(error.message || error, 500);
+  }
+}
+
 
 }

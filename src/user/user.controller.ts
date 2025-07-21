@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { createUserDTO } from './Dto/create-user-dto';
 import { UserService } from './user.service';
 import { SendOTPDTO } from './Dto/opt-dto';
+import { ChangePasswordDTO } from './Dto/change-password-dto';
 // import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 // import { updateUserDto } from './Dto/update-user-dto';
 // import { ChangePasswordDto } from './Dto/change-password';
@@ -44,6 +45,12 @@ export class UserController {
   async getUser(@Param('id') id: string) {
     return this.userService.getUser(id);
   }
+
+@Post('change-password')
+async changePassword(@Body() body: ChangePasswordDTO) {
+  return this.userService.changePassword(body);
+}
+
 
   
   

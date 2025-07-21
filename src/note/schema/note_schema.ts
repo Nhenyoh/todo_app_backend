@@ -1,7 +1,7 @@
 
 
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document,Schema as  MongooseSchema } from "mongoose";
+import { Date, Document,Schema as  MongooseSchema } from "mongoose";
 import { User } from "src/user/schema/user-schema";
 
 
@@ -16,6 +16,8 @@ export class Note extends Document{
     id:string
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' }) // Reference User model
     createdby: string;
+    @Prop({type:Date})
+    createdat:Date
 }
 
 

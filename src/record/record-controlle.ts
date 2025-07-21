@@ -11,8 +11,9 @@ export class Recordcontroller{
     
       @Post('')
       @UseInterceptors(FileInterceptor('file'))
-      async uploadFile(@UploadedFile() file: UploadedFileType,createdby:string, title:string){
-        console.log("RECORD UPLOADED TO REMOTE DATABASE")
+      async uploadFile(@UploadedFile() file: UploadedFileType, @Body('createdby') createdby: string,
+  @Body('title') title: string){
+        console.log("RECORD UPLOADED TO REMOTE DATABASE",createdby)
         const url = await this.cloudinaryService.uploadImage(file);
         
        return this.recordService.create({url,createdby,title})

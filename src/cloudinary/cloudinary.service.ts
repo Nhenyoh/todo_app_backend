@@ -26,4 +26,26 @@ export class CloudinaryService {
       ).end(file.buffer); // Use file.buffer for in-memory uploads
     });
   }
+
+  async deleteFile(publicId: string) {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(publicId, { resource_type: 'video' }, (error, result) => {
+      if (error) return reject(error);
+      resolve(result);
+    });
+  });
+}
+
+  extractCloudinaryPublicId(url: string): string | null {
+    try {
+      const parts = url.split('/');
+      const fileName = parts[parts.length - 1];
+      const folder = parts[parts.length - 2];
+      const nameWithoutExt = fileName.split('.')[0];
+      return `${folder}/${nameWithoutExt}`;
+    } catch (e) {
+      console.error('Failed to extract Cloudinary public ID:', e);
+      return null;
+    }
+  }
 }
