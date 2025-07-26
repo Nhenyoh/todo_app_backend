@@ -48,12 +48,18 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3000/users/
+GET  https://todo-app-backend-m1js.onrender.com/users/
 
 
 ###
-GET  https://todo-app-backend-m1js.onrender.com/users/
+Post  https://todo-app-backend-m1js.onrender.com/users/verification
+Content-Type: application/json
 
+{
+    "fullNames":"Lois",
+    "email":"loisbania0@gmail.com",
+    "password":"12345678"
+}
 
 ###
 
@@ -65,7 +71,7 @@ Content-Type: application/json
     "fullNames":"Hakeem"
 }
 ###
-DELETE  http://localhost:3000/users/687fb6267387112cbe629f9e 
+DELETE  https://todo-app-backend-m1js.onrender.com/users/6884562523c6bd9530f47f87 
 
 
 ###

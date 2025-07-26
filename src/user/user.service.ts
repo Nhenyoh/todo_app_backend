@@ -372,7 +372,7 @@ export class UserService {
             <p>Your <strong>One-Time Password (OTP)</strong> is:</p>
             <h2 style="color: #2e6c80;">${otp}</h2>
             <p>This code will expire in <strong>10 minutes</strong>. Please do not share it with anyone.</p>
-            <p>Thank you,<br/>The <strong>Your App</strong> Team</p>
+            <p>Thank you,<br/> <strong>Planner</strong> Team</p>
           </div>
         `,
       };
