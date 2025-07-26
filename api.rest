@@ -21,7 +21,8 @@ Content-Type: application/json
     "password":"12345678"
 }
 
-
+###
+Get https://todo-app-backend-m1js.onrender.com/users
 
 ###
 
@@ -47,11 +48,11 @@ Content-Type: application/json
 }
 
 ###
-GET  http://localhost:3000/notes/6877854e75d35ddb1a9c3a39
+GET  http://localhost:3000/users/
 
 
 ###
-GET  http://localhost:3000/notes/general/
+GET  https://todo-app-backend-m1js.onrender.com/users/
 
 
 ###
@@ -64,19 +65,11 @@ Content-Type: application/json
     "fullNames":"Hakeem"
 }
 ###
-DELETE  https://todo-app-backend-h8w0.onrender.com/users/672ed22d205a4f1f8f3a75e5
-
+DELETE  http://localhost:3000/users/687fb6267387112cbe629f9e 
 
 
 ###
-Post http://localhost:3000/notes/
-Content-Type: application/json
-
-{
-    'title': 'Texting',
-    'body': 'this message meets you well',
-    'id':  '337',
-}
+curl -X POST https://todo-app-backend-m1js.onrender.com/users/login -H "Content-Type: application/json" -d '{"email":"betrandcliff@gmail.com","password":"12345678"}'
 
 
 ###

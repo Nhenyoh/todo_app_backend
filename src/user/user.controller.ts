@@ -25,6 +25,7 @@ export class UserController {
   // Signup route
   @Post('signup')
   async signup(@Body() createUserDto: createUserDTO) {
+    console.log("the user email is" ,createUserDto.email)
     return this.userService.create(createUserDto);
   }
 
@@ -40,6 +41,11 @@ export class UserController {
     return this.userService.getUsers();
   }
 
+  // Get all users
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.userService.deleteUser(id);
+  }
   // Get a specific user by ID
   @Get(':id')
   async getUser(@Param('id') id: string) {
