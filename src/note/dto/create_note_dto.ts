@@ -1,7 +1,10 @@
 export class createNoteDTO{
     readonly title:string
     readonly body:string
-    readonly userid:string
-    readonly createdby:string
+    
+    readonly localId:string
+    readonly createdBy:string
+     createdAt:Date
+    readonly isSynced:boolean
 }
 

@@ -14,7 +14,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization', // Allowed headers
     credentials: true, // Allow cookies
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe())
 
 
 

@@ -16,13 +16,13 @@ Post https://localhost:3000/users/login
 Content-Type: application/json
 
 { 
-    "email":"sakwecliff@gmail.com",
+    "email":"betrandcliff@gmail.com",
 
     "password":"12345678"
 }
 
 ###
-Get https://todo-app-backend-m1js.onrender.com/users
+# Get https://todo-app-backend-m1js.onrender.com/users
 
 ###
 
@@ -37,18 +37,21 @@ DELETE http://localhost:3000/record/687e27568565a4f2f123d8c9
 Get http://localhost:3000/users/otps
 ###
 
-Post https://todo-app-backend-h8w0.onrender.com/notes/
+Post http://localhost:3000/notes/
 Content-Type: application/json
 
 {
-    "title":"Visiting mum today",
-    "details":"The bug of fetching all notes has being fixed",
-    "id":"23",
     "createdby":"67feadb4b11216b645e0cdb2"
 }
 
 ###
-GET  https://todo-app-backend-m1js.onrender.com/users/
+GET  http://localhost:3000/users/
+
+###
+GET  http://localhost:3000/notes/
+
+###
+DELETE  http://localhost:3000/notes/68ef5910db6a8a85484a1326
 
 
 ###

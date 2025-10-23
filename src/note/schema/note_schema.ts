@@ -11,13 +11,14 @@ export class Note extends Document{
     @Prop()
     title:string
     @Prop()
-    details:string
+    body:string
     @Prop({ unique: true,})
-    id:string
+    localId:string
+    
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' }) // Reference User model
-    createdby: string;
+    createdBy: string;
     @Prop({type:Date})
-    createdat:Date
+    createdAt:Date
 }
 
 

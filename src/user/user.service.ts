@@ -320,7 +320,7 @@ export class UserService {
         },
       };
     } catch (error) {
-      throw new HttpException(error.message || error, 500);
+      throw new HttpException(error.message || error, 401);
     }
   }
 

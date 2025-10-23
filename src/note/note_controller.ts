@@ -13,7 +13,7 @@ export class Notecontroller{
         return this.noteService.create(createNotedto)
     }
 
-    @Get('/general/')
+    @Get('')
     async getNotes():Promise<Note[]>{
         return this.noteService.getNotes()
     }
