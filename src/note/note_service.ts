@@ -9,21 +9,7 @@ import * as moment from "moment";
 export class NoteService {
   constructor(@InjectModel(Note.name) private readonly noteService: Model<NoteDocument>) {}
 
-  // async create(noteservice: createNoteDTO) {
-  //   try {
-  //     const noteExist = await this.noteService.findOne({ localId: noteservice.localId });
-  //     if (noteExist) {
-  //       throw new HttpException("Note exist", 502);
-  //     } else {
-  //       const newTodo = new this.noteService(noteservice);
-  //       await newTodo.save();
-  //     }
-  //     return "Successful";
-  //   } catch (error) {
-  //     console.error("Error creating note:", error.message || error);
-  //     throw new HttpException(error, 500);
-  //   }
-  // }
+ 
 
   
 async create(noteservice: createNoteDTO) {
@@ -45,7 +31,7 @@ async create(noteservice: createNoteDTO) {
 
     const newTodo = new this.noteService(noteservice);
     await newTodo.save();
-    console.log("Note created successfully");
+   
     return "Successful";
   } catch (error) {
     console.error("Error creating note:", error.message || error);
